@@ -1,0 +1,108 @@
+---
+name: saju-pixel-aesthetic
+description: 사주 서비스(SAJU_v0.1) 전용 픽셀/레트로 게임 디자인 규칙. Figma 목업(Wz9hc3jNef7q28bEkhH6ID)과 ref_01.jpg(tutu.ru)·ref_02.jpg(타마고치 웹) 기반. PORTFOLIO/skill/soft-skill.md(프리미엄 글래스모피즘)와는 반대 방향이므로 절대 섞지 않는다.
+---
+
+# SAJU 픽셀 디자인 규칙
+
+## 0. 이 문서가 존재하는 이유
+
+`PORTFOLIO/skill/soft-skill.md`는 **프리미엄 글래스모피즘 SaaS** 스타일(블러, 헤어라인 보더, 부드러운 ambient shadow)을 강제한다. SAJU는 정반대인 **다크 배경 + 픽셀 아트 + 레트로 게임 UI**로 간다. 두 프로젝트를 같은 AI가 오가며 작업하므로, SAJU 작업 시 `soft-skill.md`의 규칙을 절대 끌어오지 않도록 이 문서로 고정한다.
+
+## 1. 금지 패턴 (PORTFOLIO 스타일과 섞이지 않도록)
+
+- `backdrop-blur` 사용 금지 — 픽셀 UI에 블러는 없다
+- 부드러운 ambient shadow(`shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)]` 류) 금지 — 아래 §3 하드 섀도만 쓴다
+- 헤어라인(`1px`) 보더 금지 — 최소 `2px`, 색은 검정 또는 진한 accent
+- 큰 `border-radius`(`rounded-2xl`, `rounded-full` 카드) 금지 — 버튼 필 형태 제외, 기본은 `rounded-[4px]`
+- Inter, Noto Sans KR, Pretendard 등 일반 산세리프 기본 폰트 금지 — 본문·제목 모두 Mona 픽셀 폰트(§2)
+
+## 2. 타이포그래피
+
+| 용도 | 폰트 | 크기 | 비고 |
+| --- | --- | --- | --- |
+| 화면 제목 | Mona10 Bold | 32~40px | tracking 1.28~1.6px |
+| 본문/라벨 | Mona10 Regular | 12~16px | |
+| 강조 텍스트(별명 등) | Mona12 Bold | 20~24px | `text-shadow: 0px 2px 0px black` |
+| 한글 필수 옵션 | `Mona12TextKR` / `Mona12TextKR-Bold` | — | 한글 전용 글리프 포함 버전. 한글이 많이 들어가는 화면은 이걸 우선 사용 |
+
+**폰트 파일 위치 (로컬)**: `~/Library/Fonts/Mona10.otf`, `Mona10-Bold.otf`, `Mona12.otf`, `Mona12-Bold.otf`, `Mona12TextKR.otf`, `Mona12TextKR-Bold.otf`
+→ Day 1(프로젝트 셋업) 또는 Day 2(입력 화면)에서 프로젝트의 `src/assets/fonts/` (또는 `public/fonts/`)로 복사 후 `@font-face` 등록.
+
+PRD §5.1의 한글 규칙(`break-keep-all`, `leading-snug`)은 그대로 유지 — 픽셀 폰트라도 한글 줄바꿈 규칙은 동일하게 적용한다.
+
+## 3. 컬러
+
+| 토큰 | 값 | 용도 |
+| --- | --- | --- |
+| `bg-base` | `#1a1a1a` | 전체 배경 |
+| `accent-primary` | 마젠타/핑크(Figma 버튼 색, hex는 실제 구현 시 `get_design_context`로 재확인) | 주요 CTA 버튼 |
+| `surface-white` | `#ffffff` | 입력창 배경 |
+| `text-muted` | `#b1b1b1` | 입력창 placeholder |
+
+**천간(天干) 10색 — 마스코트 태그용**
+
+| 천간 | accent 색 | 비고 |
+| --- | --- | --- |
+| 갑목 | `#107b5d` | Figma에서 확인됨 |
+| 을목 | 확인 필요 | Figma `1:13` 프레임 존재, 색상 미확인 |
+| 병화 | 확인 필요 | |
+| 정화 | 확인 필요 | |
+| 무토 | 확인 필요 | |
+| 기토 | 확인 필요 | |
+| 경금 | **캐릭터 자체가 Figma에 없음** | 에셋 제작 필요 |
+| 신금 | **캐릭터 자체가 Figma에 없음** | 에셋 제작 필요 |
+| 임수 | 확인 필요 | |
+| 계수 | 확인 필요 | |
+
+> 나머지 8개 천간의 정확한 hex는 각 프레임을 `get_design_context`로 개별 조회해서 채운다. 지금은 갑목만 확인됨.
+
+## 4. 컴포넌트 스펙
+
+### 입력창 (text input)
+- 배경 흰색, `rounded-[4px]`
+- `box-shadow: inset 0 3px 0 rgba(0,0,0,0.4)` — 눌린 느낌의 픽셀 베젤
+- 텍스트 최소 **16px** (PRD §5.1 iOS Safari 확대 방지 규칙과 동일 — 별도 예외 없음)
+- placeholder 색 `#b1b1b1`
+
+### 체크박스
+- 20×20px, `border-2 border-black`, 흰 배경
+- `box-shadow: inset 0 2px 0 rgba(0,0,0,0.4)`
+
+### 버튼 (CTA)
+- 마젠타/핑크 배경, 필 형태 아님 — Figma 기준 라운드 사각형(작은 radius) + **하드 오프셋 그림자**(블러 0, 검정색 그림자가 아래로 딱 떨어지는 형태 — `ref_01.jpg` tutu.ru 버튼 참고)
+- 높이 62px 이상 (PRD 44px 터치 기준 충족)
+- hover 없음 — 모바일 우선이므로 active 시 눌림 애니메이션만 (예: 그림자 줄이고 버튼 1~2px 아래로 이동)
+
+### 보조 버튼 (secondary CTA)
+- Figma `8:60`("새로운 정보 입력") 기준 — 형태·높이·하드 오프셋 그림자는 주 버튼과 동일, **배경만 검정 + 흰색 `border-2`**로 바뀐다
+- 주 버튼과 나란히/세로로 쓰일 때 시각적으로 "덜 중요한 선택지"로 읽히게 하는 용도 (예: 저장된 정보 화면에서 "새로운 정보 입력")
+
+### 마스코트 캐릭터 카드
+- 캐릭터 이미지 54×47px (픽셀 아트 PNG, 천간별 1종)
+- 천간 pill 태그: `border-2`, 천간별 accent 색으로 stroke + 텍스트, 배경 투명, `rounded-[1000px]`
+- 별명 텍스트: Mona12 Bold 24px + 하드 텍스트 섀도
+
+## 5. 화면 배치 원칙 (PRD §5.1과 병행 적용)
+
+- 입력 화면(Figma `2:5`), 결과 화면 헤더(Figma `5:5`)는 **393px 기준**으로 설계됨 — PRD의 375px 설계 기준·320px 최소 지원과 함께 확인
+- 마스코트 카드는 결과 화면 **헤더** 자리에 추가되고, 기존 PRD §5.3의 만세력 표·오행·십신·신살 순서는 그대로 유지 (카드가 그 구성을 대체하지 않음)
+- PRD §5.1 "세로 배치 금지"(4열 나란히 유지) 원칙은 만세력 표에만 해당 — 마스코트 카드는 별도 섹션이라 충돌 없음
+
+## 5a. 재진입 화면 (저장된 정보 있을 경우)
+
+Figma `8:32` 기준. §1의 "본문도 Mona 픽셀 폰트" 규칙에서 벗어나는 부분이 하나 있다: 안내 문구(`작성했던 '{닉네임}'님 정보가 있습니다.`)가 Figma에서 `Pretendard:Regular` 16px로 돼 있다. 의도적인지 실수인지 불명확하므로, **구현 시엔 Mona 폰트로 통일**하는 걸 기본으로 한다 (나머지 화면과 이질감 없게). 시각적으로 확인해보고 어색하면 되돌린다.
+
+## 6. 에셋 파이프라인
+
+- Figma가 주는 이미지 URL은 **7일 후 만료**. 실제 구현 시점에 `get_design_context`를 다시 호출해 받은 URL로 다운로드 → 프로젝트 정적 에셋 폴더에 커밋. URL을 코드에 그대로 박아두지 않는다
+- 현재 Figma에 있는 천간 캐릭터: 갑목·을목·병화·정화·무토·기토·임수·계수 (8/10)
+- **경금·신금 캐릭터는 아직 없음** — 나머지 8종과 동일 스타일로 추가 제작 필요 (Day 4 전 완료 목표)
+
+## 7. 체크리스트 (구현 시 확인)
+
+- [ ] `backdrop-blur`, 부드러운 ambient shadow, 헤어라인 보더가 코드에 하나도 없다
+- [ ] 모든 제목·본문이 Mona 계열 폰트로 렌더링된다 (Inter/Noto Sans KR 등 기본 폰트로 폴백되지 않음)
+- [ ] 입력 텍스트 16px 이상, 체크박스·버튼 44px 이상 터치 영역 확보 (PRD §8.4와 동일 기준)
+- [ ] 천간 10개 캐릭터 에셋이 모두 준비됐다 (경금·신금 포함)
+- [ ] Figma 임시 이미지 URL이 아니라 프로젝트에 커밋된 에셋을 참조한다
