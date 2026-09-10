@@ -1,6 +1,37 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Mona10';
+  src: url('/fonts/Mona10.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mona10';
+  src: url('/fonts/Mona10-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mona12';
+  src: url('/fonts/Mona12.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mona12';
+  src: url('/fonts/Mona12-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --font-pixel: 'Mona10', system-ui, sans-serif;
+  --font-pixel-accent: 'Mona12', system-ui, sans-serif;
+}
+
 body {
   margin: 0;
   overscroll-behavior-y: none;
+  font-family: var(--font-pixel);
 }

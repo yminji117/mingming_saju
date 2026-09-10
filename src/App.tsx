@@ -1,8 +1,48 @@
+import { useState } from 'react'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { MainInputScreen } from './screens/MainInputScreen'
+import { ResultStub } from './screens/ResultStub'
+import { SavedInfoScreen } from './screens/SavedInfoScreen'
+import { loadLastInput, saveLastInput } from './lib/storage'
+import type { SajuFormInput } from './lib/types'
+
+function EntryRoute() {
+  const navigate = useNavigate()
+  const [forceNew, setForceNew] = useState(false)
+  const saved = loadLastInput()
+
+  function handleSubmit(input: SajuFormInput) {
+    saveLastInput(input)
+    navigate('/result', { state: { input } })
+  }
+
+  if (saved && !forceNew) {
+    return (
+      <SavedInfoScreen
+        nickname={saved.nickname}
+        onUseSaved={() => navigate('/result', { state: { input: saved } })}
+        onNewInput={() => setForceNew(true)}
+      />
+    )
+  }
+
+  return <MainInputScreen onSubmit={handleSubmit} />
+}
+
+function ResultRoute() {
+  const location = useLocation()
+  const input = (location.state as { input?: SajuFormInput } | null)?.input ?? loadLastInput()
+
+  if (!input) return <Navigate to="/" replace />
+  return <ResultStub input={input} />
+}
+
 function App() {
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-[#1a1a1a] px-6 text-center text-white">
-      <p className="text-lg">사주 서비스 — 준비 중</p>
-    </div>
+    <Routes>
+      <Route path="/" element={<EntryRoute />} />
+      <Route path="/result" element={<ResultRoute />} />
+    </Routes>
   )
 }
 

@@ -7,8 +7,8 @@
 
 | Day | 상태 | 핵심 작업 |
 | --- | --- | --- |
-| Day 1 | ⬜ 미시작 | `ssaju` 라이브러리 검증 + 프로젝트 셋업 |
-| Day 2 | ⬜ 미시작 | 모바일 셸 + 입력 화면 |
+| Day 1 | ✅ 완료 | `ssaju` 라이브러리 검증 + 프로젝트 셋업 |
+| Day 2 | ✅ 완료 | 모바일 셸 + 입력 화면 |
 | Day 3 | ⬜ 미시작 | 계산 파이프라인 (보정 로직) |
 | Day 4 | ⬜ 미시작 | 결과 화면 + 0원 배포 |
 
@@ -26,7 +26,7 @@
 - [x] 자시 동작 확인 (23:00~23:59 야자시 / 00:00~00:59 조자시가 어떻게 나오는지) — **별도 보정 로직 불필요**, 아래 결과 참고
 - [x] Vite + React + TypeScript 프로젝트 생성
 - [x] Tailwind CSS 세팅 (v4, `@tailwindcss/vite` 플러그인)
-- [ ] GitHub 레포 생성 → Netlify 연결 (gh/netlify CLI 미설치 — 사용자 확인 필요)
+- [x] GitHub 레포 생성 → Netlify 연결 (`github.com/yminji117/mingming_saju` → `mingming-saju.netlify.app`)
 
 ### 검증 결과 요약
 
@@ -38,12 +38,13 @@
 ### 완료 기준
 
 - [x] 검증 케이스 10건 전부 일치
-- [ ] 빈 화면이 Netlify URL로 뜬다 (Netlify 연결 전이라 미완료)
+- [x] 빈 화면이 Netlify URL로 뜬다 (`mingming-saju.netlify.app`, HTML 셸 서빙 확인 — 실기기 육안 확인은 사용자 진행 중)
 
 ### 확정 필요 사항 (PRD 부록)
 
-- [ ] 서비스명 / Netlify 서브도메인 정하기
+- [x] 서비스명 / Netlify 서브도메인 정하기 — `mingming_saju` / `mingming-saju.netlify.app`
 - [x] 자시 정책(야자시 당일/익일) — ssaju 기본 동작이 PRD 정책과 일치, 별도 처리 불필요
+- [x] 배포처 확정 — Netlify (Vercel과 비교 후 확정: 무료 티어 상업적 이용 허용이 결정 요인)
 
 ---
 
@@ -51,18 +52,25 @@
 
 ### 작업
 
-- [ ] 375px 기준 모바일 컨테이너 / 디자인 토큰 / 폰트 세팅
-- [ ] 입력 화면(`/`) 구성: 양력/음력 세그먼트 → 생년월일 select → 시각 select → 시간 모름 체크 → 출생지 select(8개 도시) → 성별 → 제출 버튼(하단 고정)
-- [ ] 네이티브 `<select>` 사용 (커스텀 드롭다운·date picker 금지)
-- [ ] 입력 유효성: 1900년~오늘, 실재 날짜만, 음력 윤달은 실제 윤달 있는 달만
-- [ ] Figma `2:5` 기준 픽셀 스타일 적용 (`skill/pixel-design-skill.md` 참고 — 다크 배경, Mona 픽셀 폰트, 하드 베젤 입력창)
-- [ ] 닉네임 입력 필수 검증 (빈 값/공백만 입력 시 제출 차단, PRD §4.7)
-- [ ] "저장된 정보 있을 경우" 분기 화면 (Figma `8:32`, PRD §5.2a) — 진입 시 `saju:lastInput` 존재 여부로 Main ↔ 이 화면 분기
-- [ ] 보조 버튼 컴포넌트 추가 (검정 배경 + 흰 보더, "새로운 정보 입력" 스타일)
+- [x] 375px 기준 모바일 컨테이너 / 디자인 토큰 / 폰트 세팅 (Mona10/12 `@font-face` 적용, `max-w-[345px]` 컨테이너, `dvh`+safe-area 패딩)
+- [x] 입력 화면(`/`) 구성: 이름/닉네임 → 양력/음력 세그먼트 → 생년월일 select → 시각 select → 시간 모름 체크 → 출생지 select(8개 도시) → 성별 → 제출 버튼
+- [x] 네이티브 `<select>` 사용 (커스텀 드롭다운·date picker 금지)
+- [x] 입력 유효성: 1900년~오늘, 실재 날짜만, 음력 윤달은 실제 윤달 있는 달만 (`lib/validation.ts`, `lib/lunar.ts` — ssaju로 윤달 유효성 판별)
+- [x] Figma `2:5` 기준 픽셀 스타일 적용 (`Bezel`/`PixelButton` 컴포넌트, `skill/pixel-design-skill.md` 참고)
+- [x] 닉네임 입력 필수 검증 (빈 값/공백만 입력 시 제출 차단, PRD §4.7)
+- [x] "저장된 정보 있을 경우" 분기 화면 (Figma `8:32`, PRD §5.2a) — `App.tsx`의 `EntryRoute`가 `saju:lastInput` 존재 여부로 분기
+- [x] 보조 버튼 컴포넌트 추가 (검정 배경 + 흰 보더, `PixelButton variant="secondary"`)
+
+### 구현 메모
+
+- 라우팅: react-router-dom 추가 (`/` 입력 화면, `/result` — Day4 전이라 입력값 확인용 스텁 화면)
+- 제출(`확인하기`) 시 실제 사주 계산은 아직 안 함 (Day3 계산 파이프라인 이후). 지금은 입력값이 `saju:lastInput`에 저장되고 `/result` 스텁에 그대로 표시되는 것까지 확인
+- 하드 오프셋 그림자 버튼은 Figma의 SVG 톱니 테두리 대신 CSS `box-shadow`로 근사함(`ponytail:` 주석 남김) — 노치 모양이 꼭 필요해지면 그때 SVG로 교체
+- 음력 일자 select는 29/30일 여부를 정확히 좁히지 않고 30일까지 항상 노출 (`ponytail:` 주석) — 실제 없는 날짜는 제출 시 validateForm이 걸러냄
 
 ### 완료 기준
 
-- [ ] 320px 폭에서 가로 스크롤 0
+- [x] 320px 폭에서 가로 스크롤 0 (Playwright로 확인: `scrollWidth === clientWidth === 320`, 콘솔 에러 없음, `scripts/check-mobile.mjs`로 재확인 가능)
 
 ---
 
