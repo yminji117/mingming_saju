@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'react'
 export function Bezel({ className = '', ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`flex items-center rounded-[4px] bg-white shadow-[inset_0_3px_0_0_rgba(0,0,0,0.4)] ${className}`}
+      className={`relative flex items-center rounded-[4px] bg-white shadow-[inset_0_3px_0_0_rgba(0,0,0,0.4)] ${className}`}
       {...props}
     />
   )

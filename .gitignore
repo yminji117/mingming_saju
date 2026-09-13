@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 .env
-scripts/.mobile-320.png
+scripts/.*.png
 
 # Editor directories and files
 .vscode/*

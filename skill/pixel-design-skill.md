@@ -29,6 +29,8 @@ description: 사주 서비스(SAJU_v0.1) 전용 픽셀/레트로 게임 디자�
 **폰트 파일 위치 (로컬)**: `~/Library/Fonts/Mona10.otf`, `Mona10-Bold.otf`, `Mona12.otf`, `Mona12-Bold.otf`, `Mona12TextKR.otf`, `Mona12TextKR-Bold.otf`
 → Day 1(프로젝트 셋업) 또는 Day 2(입력 화면)에서 프로젝트의 `src/assets/fonts/` (또는 `public/fonts/`)로 복사 후 `@font-face` 등록.
 
+⚠️ **알려진 폰트 결함**: `0`(숫자)과 `ㅇ`(한글 자음) 글리프가 Mona10/Mona12/MonaS10/MonaS12 등 **모든 사이즈 변형에서 공통으로 속이 채워진 채로 렌더링됨** (구멍이 없음 — `9`, `8`, `O` 등 다른 원형 글자는 정상). 16px~40px까지 사이즈를 바꿔가며 확인했지만 사이즈와 무관하게 나타남 — 폰트 파일 자체의 결함으로 판단됨(코드/CSS 문제 아님). 우리 코드에서 고칠 수 없는 부분이라 감안하고 쓴다. 날짜(`1990.01.01`)처럼 `0`이 자주 나오는 자리에서 눈에 띌 수 있음.
+
 PRD §5.1의 한글 규칙(`break-keep-all`, `leading-snug`)은 그대로 유지 — 픽셀 폰트라도 한글 줄바꿈 규칙은 동일하게 적용한다.
 
 ## 3. 컬러

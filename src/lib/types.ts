@@ -1,4 +1,4 @@
-import type { CityName } from './cities'
+import type { CityName } from './cities.ts'
 
 export type SajuFormInput = {
   nickname: string

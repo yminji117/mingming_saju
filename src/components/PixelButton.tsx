@@ -1,18 +1,24 @@
 import type { ButtonHTMLAttributes } from 'react'
+import buttonPrimary from '../assets/button-primary.svg'
+import buttonSecondary from '../assets/button-secondary.svg'
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary'
 }
 
-// ponytail: Figma는 버튼 테두리가 톱니 모양(SVG Union) — 여기선 하드 오프셋 그림자로
-// 근사했다. 픽셀 노치 모양이 꼭 필요해지면 그때 SVG 에셋으로 교체.
-export function PixelButton({ variant = 'primary', className = '', ...props }: Props) {
-  const base =
-    'w-full h-[62px] rounded-[4px] font-bold text-[20px] tracking-[1px] transition-transform duration-100 active:translate-x-[2px] active:translate-y-[2px] disabled:opacity-40 disabled:pointer-events-none'
-  const variantClass =
-    variant === 'primary'
-      ? 'bg-[#ec1e79] text-white shadow-[4px_4px_0_0_#000] active:shadow-[2px_2px_0_0_#000]'
-      : 'bg-black text-white border-2 border-white shadow-[4px_4px_0_0_#000] active:shadow-[2px_2px_0_0_#000]'
+// Figma 2:19/8:54/8:60 — 실제 버튼 노치 에셋(button-primary.svg / button-secondary.svg) 그대로 사용
+export function PixelButton({ variant = 'primary', className = '', children, ...props }: Props) {
+  const asset = variant === 'primary' ? buttonPrimary : buttonSecondary
 
-  return <button className={`${base} ${variantClass} ${className}`} {...props} />
+  return (
+    <button
+      className={`relative flex h-[62px] w-full items-center justify-center active:translate-y-[2px] ${className}`}
+      {...props}
+    >
+      <span className="absolute inset-[-6.45%_-1.16%_-19.35%_-1.16%]">
+        <img src={asset} alt="" className="block size-full" />
+      </span>
+      <span className="relative text-[18px] font-normal text-white">{children}</span>
+    </button>
+  )
 }

@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+/* 저장된 정보 화면 안내 문구(Figma 8:32)만 Pretendard — Regular/Bold 두 굵기만 필요해 전체 웨이트 대신 개별 파일만 가져온다 */
+@import 'pretendard/dist/web/static/Pretendard-Regular.css';
+@import 'pretendard/dist/web/static/Pretendard-Bold.css';
 
 @font-face {
   font-family: 'Mona10';
@@ -26,8 +29,8 @@
 }
 
 :root {
-  --font-pixel: 'Mona10', system-ui, sans-serif;
-  --font-pixel-accent: 'Mona12', system-ui, sans-serif;
+  --font-pixel: 'Mona12', system-ui, sans-serif;
+  --font-pixel-accent: 'Mona10', system-ui, sans-serif;
 }
 
 body {

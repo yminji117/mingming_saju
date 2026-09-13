@@ -4,7 +4,7 @@ import type { SelectHTMLAttributes } from 'react'
 export function PixelSelect({ className = '', ...props }: SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
-      className={`h-full w-full appearance-none bg-transparent text-[16px] text-black focus:outline-none ${className}`}
+      className={`h-full appearance-none bg-transparent text-[16px] text-black focus:outline-none ${className}`}
       {...props}
     />
   )
