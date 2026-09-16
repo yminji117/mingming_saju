@@ -14,7 +14,9 @@ export type SajuComputation = {
 
 // PRD §4.1 계산 순서 — 이 순서를 바꾸면 결과가 달라진다.
 // ① 음력→양력  ② 서머타임 보정  ③ 진태양시 보정(ssaju 내장 옵션)  ④ calculateSaju()  ⑤ 시간 미상 처리
-export function computeSaju(input: SajuFormInput): SajuComputation {
+// useLocalMeanTime: false — 결과 화면 진태양시 토글(§5.3 [1])이 꺼졌을 때 보정 없이 재계산하기 위한 옵션
+export function computeSaju(input: SajuFormInput, options: { useLocalMeanTime?: boolean } = {}): SajuComputation {
+  const useLocalMeanTime = options.useLocalMeanTime ?? true
   // ① 음력 → 양력
   const solar =
     input.calendarType === 'lunar'
@@ -52,8 +54,7 @@ export function computeSaju(input: SajuFormInput): SajuComputation {
     minute: corrected.getMinutes(),
     gender: input.gender,
     calendar: 'solar',
-    applyLocalMeanTime: true,
-    longitude: city.longitude,
+    ...(useLocalMeanTime ? { applyLocalMeanTime: true, longitude: city.longitude } : {}),
   })
 
   return {

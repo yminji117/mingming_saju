@@ -5,7 +5,7 @@ import { PixelButton } from '../components/PixelButton'
 import { PixelCheckbox } from '../components/PixelCheckbox'
 import { PixelSelect } from '../components/PixelSelect'
 import { CITIES, DEFAULT_CITY } from '../lib/cities'
-import { parseDateText, parseTimeText } from '../lib/textInputs'
+import { formatDateInput, formatTimeInput, parseDateText, parseTimeText } from '../lib/textInputs'
 import type { SajuFormInput } from '../lib/types'
 import { validateForm } from '../lib/validation'
 
@@ -64,7 +64,7 @@ export function MainInputScreen({ onSubmit }: Props) {
   }
 
   function handleDateTextChange(rawText: string) {
-    const text = rawText.replace(/[^0-9.]/g, '')
+    const text = formatDateInput(rawText)
     setDateText(text)
     const parsed = parseDateText(text)
     if (parsed) {
@@ -73,7 +73,7 @@ export function MainInputScreen({ onSubmit }: Props) {
   }
 
   function handleTimeTextChange(rawText: string) {
-    const text = rawText.replace(/[^0-9:]/g, '')
+    const text = formatTimeInput(rawText)
     setTimeText(text)
     const parsed = parseTimeText(text)
     if (parsed) {

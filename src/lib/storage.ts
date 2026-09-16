@@ -16,3 +16,7 @@ export function loadLastInput(): SajuFormInput | null {
 export function saveLastInput(input: SajuFormInput): void {
   localStorage.setItem(LAST_INPUT_KEY, JSON.stringify(input))
 }
+
+export function clearLastInput(): void {
+  localStorage.removeItem(LAST_INPUT_KEY)
+}

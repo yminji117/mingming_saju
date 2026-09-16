@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Toast } from './components/Toast'
 import { MainInputScreen } from './screens/MainInputScreen'
-import { ResultStub } from './screens/ResultStub'
+import { ResultScreen } from './screens/ResultScreen'
 import { SavedInfoScreen } from './screens/SavedInfoScreen'
-import { loadLastInput, saveLastInput } from './lib/storage'
+import { clearLastInput, loadLastInput, saveLastInput } from './lib/storage'
 import type { SajuFormInput } from './lib/types'
 
 function EntryRoute() {
   const navigate = useNavigate()
   const [forceNew, setForceNew] = useState(false)
+  const [toast, setToast] = useState<string | null>(null)
   const saved = loadLastInput()
 
   function handleSubmit(input: SajuFormInput) {
@@ -16,17 +18,27 @@ function EntryRoute() {
     navigate('/result', { state: { input } })
   }
 
-  if (saved && !forceNew) {
-    return (
-      <SavedInfoScreen
-        nickname={saved.nickname}
-        onUseSaved={() => navigate('/result', { state: { input: saved } })}
-        onNewInput={() => setForceNew(true)}
-      />
-    )
+  function handleDelete() {
+    clearLastInput()
+    setForceNew(true)
+    setToast('삭제 완료 되었습니다.')
   }
 
-  return <MainInputScreen onSubmit={handleSubmit} />
+  return (
+    <>
+      {saved && !forceNew ? (
+        <SavedInfoScreen
+          nickname={saved.nickname}
+          onUseSaved={() => navigate('/result', { state: { input: saved } })}
+          onNewInput={() => setForceNew(true)}
+          onDelete={handleDelete}
+        />
+      ) : (
+        <MainInputScreen onSubmit={handleSubmit} />
+      )}
+      {toast && <Toast message={toast} onDone={() => setToast(null)} />}
+    </>
+  )
 }
 
 function ResultRoute() {
@@ -34,7 +46,7 @@ function ResultRoute() {
   const input = (location.state as { input?: SajuFormInput } | null)?.input ?? loadLastInput()
 
   if (!input) return <Navigate to="/" replace />
-  return <ResultStub input={input} />
+  return <ResultScreen input={input} />
 }
 
 function App() {
