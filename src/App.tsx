@@ -9,7 +9,8 @@ import type { SajuFormInput } from './lib/types'
 
 function EntryRoute() {
   const navigate = useNavigate()
-  const [forceNew, setForceNew] = useState(false)
+  const location = useLocation()
+  const [forceNew, setForceNew] = useState(() => Boolean((location.state as { forceNew?: boolean } | null)?.forceNew))
   const [toast, setToast] = useState<string | null>(null)
   const saved = loadLastInput()
 
