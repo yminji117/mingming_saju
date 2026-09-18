@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 type Props = {
   message: string
@@ -7,10 +7,15 @@ type Props = {
 
 // Figma 43:81 "삭제 완료 Toast Popup" — 흰색 70% 배경, 알약형, 2초 후 자동 소멸
 export function Toast({ message, onDone }: Props) {
+  const onDoneRef = useRef(onDone)
   useEffect(() => {
-    const timer = setTimeout(onDone, 2000)
+    onDoneRef.current = onDone
+  })
+
+  useEffect(() => {
+    const timer = setTimeout(() => onDoneRef.current(), 2000)
     return () => clearTimeout(timer)
-  }, [onDone])
+  }, [])
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-[calc(48px+env(safe-area-inset-bottom))] flex justify-center px-6">

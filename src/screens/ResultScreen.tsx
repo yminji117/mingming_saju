@@ -79,7 +79,7 @@ export function ResultScreen({ input }: Props) {
         </div>
 
         {/* 만세력 표 */}
-        <div className="flex w-full flex-col items-end gap-3">
+        <div className="flex w-full flex-col items-center gap-3">
           <table className="w-full table-fixed rounded-[4px] border border-white/50 text-center">
             <thead>
               <tr className="border-b border-white/40">

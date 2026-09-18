@@ -95,7 +95,7 @@ export function MainInputScreen({ onSubmit }: Props) {
     <div className="flex min-h-dvh flex-col items-center gap-[60px] bg-[#1a1a1a] px-6 pt-[60px] pb-[calc(120px+env(safe-area-inset-bottom))]">
       <div className="flex flex-col items-center gap-4">
         <img src={heart} alt="" className="h-16 w-[69px] object-cover" />
-        <h1 className="text-[40px] font-bold tracking-[1.6px] text-white">나의 만세력</h1>
+        <h1 className="text-[40px] font-bold tracking-[1.6px] text-white">사주 만세력</h1>
       </div>
 
       <div className="flex w-full max-w-[345px] flex-col gap-5">

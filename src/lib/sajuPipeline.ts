@@ -33,14 +33,14 @@ function fixYeokmasal(result: SajuResult): void {
   }
 }
 
-// ssaju가 계산하지 않는 신살 11종 (Figma 48:869 참고). WebSearch로 계산 규칙을 확인해
+// ssaju가 계산하지 않는 신살 12종 (Figma 48:869 참고). WebSearch로 계산 규칙을 확인해
 // 일간(또는 연간) 기준 대조표로 직접 계산한다. 전부 검증된 표는 아니라 항목별로 근거를 남긴다.
 
 // 일간 → 지지 1개 (복수 소스 일치, 자체 검증됨)
 const AMROK: Record<string, string> = { 甲: '亥', 乙: '戌', 丙: '申', 丁: '未', 戊: '申', 己: '未', 庚: '巳', 辛: '辰', 壬: '寅', 癸: '丑' }
 const MUNCHANG: Record<string, string> = { 甲: '巳', 乙: '午', 丙: '申', 丁: '酉', 戊: '申', 己: '酉', 庚: '亥', 辛: '子', 壬: '寅', 癸: '卯' }
 const MUNGOK: Record<string, string> = { 甲: '亥', 乙: '子', 丙: '寅', 丁: '卯', 戊: '寅', 己: '卯', 庚: '巳', 辛: '午', 壬: '申', 癸: '酉' }
-const HAKDANG: Record<string, string> = { 甲: '亥', 乙: '午', 丙: '寅', 丁: '卯', 戊: '寅', 己: '卯', 庚: '亥', 辛: '子', 壬: '申', 癸: '卯' }
+const HAKDANG: Record<string, string> = { 甲: '亥', 乙: '午', 丙: '寅', 丁: '酉', 戊: '寅', 己: '酉', 庚: '巳', 辛: '子', 壬: '申', 癸: '卯' }
 // 천간합 짝(甲己·乙庚·丙辛·丁壬·戊癸) 기준 지지 1개
 const NAKJEONG: Record<string, string> = { 甲: '巳', 己: '巳', 乙: '子', 庚: '子', 丙: '申', 辛: '申', 丁: '戌', 壬: '戌', 戊: '卯', 癸: '卯' }
 // 일간 → 지지 2개
@@ -55,7 +55,7 @@ const BAEKHO_PAIRS = new Set(['甲辰', '乙未', '丙戌', '丁丑', '戊辰', 
 // 연간의 식신 천간(연간 기준 두 자리 앞) — 월/일/시 천간 중 일치하는 기둥에 표시 (연주 자신은 대상 제외)
 const BOKSEONG_TARGET: Record<string, string> = { 甲: '丙', 乙: '丁', 丙: '戊', 丁: '己', 戊: '庚', 己: '辛', 庚: '壬', 辛: '癸', 壬: '甲', 癸: '乙' }
 // 검색으로 직접 확인된 4개(乙丙辛壬)만 — 나머지 6개는 신뢰할 수 있는 근거를 못 찾아 비워둔다
-const CHEONJU: Partial<Record<string, string>> = { 乙: '午', 丙: '申', 辛: '子', 壬: '寅' }
+const CHEONJU: Partial<Record<string, string>> = { 乙: '午', 丙: '巳', 辛: '子', 壬: '寅' }
 // 월지 삼합 그룹 기준 천간 1개 — 8글자 중 어디에 있든 적용
 const WOLDEOK: Record<string, string> = {
   寅: '丙', 午: '丙', 戌: '丙',

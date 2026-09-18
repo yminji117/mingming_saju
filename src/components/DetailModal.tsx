@@ -12,6 +12,9 @@ export function DetailModal({ title, onClose, children }: Props) {
   return (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/50 px-6" onClick={onClose}>
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
         className="flex max-h-[80vh] w-full max-w-[335px] flex-col gap-6 overflow-y-auto rounded-[4px] bg-white px-5 py-6"
         onClick={(e) => e.stopPropagation()}
       >
