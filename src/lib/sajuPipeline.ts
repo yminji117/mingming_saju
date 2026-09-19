@@ -1,7 +1,6 @@
 import { calculateSaju, lunarToSolar, type SajuResult } from 'ssaju'
 import { CITIES } from './cities.ts'
 import { applyDstCorrection } from './dst.ts'
-import { to24Hour } from './time.ts'
 import type { SajuFormInput } from './types.ts'
 
 export type SajuComputation = {
@@ -125,8 +124,7 @@ export function computeSaju(input: SajuFormInput): SajuComputation {
     return { result, timeUnknown: true, dstApplied: false, localMeanTimeOffsetMinutes: 0, solarDate: solar }
   }
 
-  const hour24 = to24Hour(input.ampm, input.hour)
-  const rawDate = new Date(solar.year, solar.month - 1, solar.day, hour24, input.minute)
+  const rawDate = new Date(solar.year, solar.month - 1, solar.day, input.hour, input.minute)
 
   // ② 서머타임 보정
   const { corrected, wasDst } = applyDstCorrection(rawDate)

@@ -4,8 +4,10 @@ import { Bezel } from '../components/Bezel'
 import { PixelButton } from '../components/PixelButton'
 import { PixelCheckbox } from '../components/PixelCheckbox'
 import { PixelSelect } from '../components/PixelSelect'
+import { TimePickerModal } from '../components/TimePickerModal'
 import { CITIES, DEFAULT_CITY } from '../lib/cities'
-import { formatDateInput, formatTimeInput, parseDateText, parseTimeText } from '../lib/textInputs'
+import { formatKoreanTime } from '../lib/time'
+import { formatDateInput, parseDateText } from '../lib/textInputs'
 import type { SajuFormInput } from '../lib/types'
 import { validateForm } from '../lib/validation'
 
@@ -17,7 +19,6 @@ function makeDefaultInput(): SajuFormInput {
     year: 0,
     month: 0,
     day: 0,
-    ampm: 'AM',
     hour: 0,
     minute: 0,
     timeUnknown: false,
@@ -35,11 +36,11 @@ type Props = {
 export function MainInputScreen({ onSubmit }: Props) {
   const [input, setInput] = useState<SajuFormInput>(makeDefaultInput)
   const [dateText, setDateText] = useState('')
-  const [timeText, setTimeText] = useState('')
+  const [timePicked, setTimePicked] = useState(false)
+  const [pickerOpen, setPickerOpen] = useState(false)
   const [touched, setTouched] = useState(false)
 
   const parsedDate = parseDateText(dateText)
-  const parsedTime = parseTimeText(timeText)
   const realismErrors = validateForm(input)
 
   const dateError = !dateText.trim()
@@ -49,11 +50,9 @@ export function MainInputScreen({ onSubmit }: Props) {
       : (realismErrors.date ?? null)
   const timeError = input.timeUnknown
     ? null
-    : !timeText.trim()
+    : !timePicked
       ? '시각을 입력하거나 시간 모름을 체크해 주세요'
-      : !parsedTime
-        ? '00:00 형식으로 입력해 주세요'
-        : null
+      : null
 
   function update<K extends keyof SajuFormInput>(key: K, value: SajuFormInput[K]) {
     setInput((prev) => {
@@ -69,15 +68,6 @@ export function MainInputScreen({ onSubmit }: Props) {
     const parsed = parseDateText(text)
     if (parsed) {
       setInput((prev) => ({ ...prev, year: parsed.year, month: parsed.month, day: parsed.day, isLeapMonth: false }))
-    }
-  }
-
-  function handleTimeTextChange(rawText: string) {
-    const text = formatTimeInput(rawText)
-    setTimeText(text)
-    const parsed = parseTimeText(text)
-    if (parsed) {
-      setInput((prev) => ({ ...prev, hour: parsed.hour, minute: parsed.minute }))
     }
   }
 
@@ -174,33 +164,32 @@ export function MainInputScreen({ onSubmit }: Props) {
           </div>
 
           <div className="mt-5">
-            <div className="flex gap-4">
-              <Bezel className="h-[48px] flex-1">
-                <PixelSelect
-                  value={input.ampm}
-                  disabled={input.timeUnknown}
-                  onChange={(e) => update('ampm', e.target.value as 'AM' | 'PM')}
-                  className="absolute inset-0 w-full px-4"
-                >
-                  <option value="AM">AM</option>
-                  <option value="PM">PM</option>
-                </PixelSelect>
-                <span aria-hidden className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 font-['Mona10'] text-[#101010]">▼</span>
-              </Bezel>
-              <Bezel className="h-[48px] w-[200px] justify-center px-4">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="00:00"
-                  disabled={input.timeUnknown}
-                  value={timeText}
-                  onChange={(e) => handleTimeTextChange(e.target.value)}
-                  className="w-full bg-transparent text-center text-[16px] tracking-[3.2px] text-[#101010] placeholder:text-[#b1b1b1] focus:outline-none disabled:opacity-50"
-                />
-              </Bezel>
-            </div>
+            <Bezel className="h-[48px] w-full">
+              <button
+                type="button"
+                disabled={input.timeUnknown}
+                onClick={() => setPickerOpen(true)}
+                className="absolute inset-0 flex w-full items-center justify-between px-4 text-[16px] tracking-[1.28px] text-[#101010] disabled:opacity-50"
+              >
+                <span>{timePicked ? formatKoreanTime(input.hour, input.minute) : '시간 선택'}</span>
+              </button>
+              <span aria-hidden className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 font-['Mona10'] text-[#101010]">▼</span>
+            </Bezel>
             {touched && timeError && <p className="mt-1 text-[12px] text-[#ff6b9d]">{timeError}</p>}
           </div>
+          {pickerOpen && (
+            <TimePickerModal
+              hour={timePicked ? input.hour : null}
+              minute={timePicked ? input.minute : null}
+              onConfirm={(h, m) => {
+                update('hour', h)
+                update('minute', m)
+                setTimePicked(true)
+                setPickerOpen(false)
+              }}
+              onCancel={() => setPickerOpen(false)}
+            />
+          )}
 
           <div className="mt-4">
             <PixelCheckbox

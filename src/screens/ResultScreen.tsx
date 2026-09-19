@@ -9,6 +9,7 @@ import { CITIES } from '../lib/cities'
 import { BRANCH_ANIMAL, ELEMENT_COLOR, ELEMENT_COLOR_WORD, ELEMENT_ORDER, ELEMENT_OUTLINE_COLOR } from '../lib/elements'
 import { SINSAL_GLOSSARY, TEN_GOD_GLOSSARY } from '../lib/glossary'
 import { computeSaju } from '../lib/sajuPipeline'
+import { formatKoreanTime } from '../lib/time'
 import type { SajuFormInput } from '../lib/types'
 
 type Props = {
@@ -29,9 +30,7 @@ export function ResultScreen({ input }: Props) {
   const dayBadgeText = `${ELEMENT_COLOR_WORD[dayDetail.element.stem]} ${BRANCH_ANIMAL[dayDetail.branchKo]}`
   const characterImg = STEM_CHARACTER[dayDetail.stem]
 
-  const timeLabel = timeUnknown
-    ? '시간 미상'
-    : `${input.ampm === 'AM' ? '오전' : '오후'} ${String(input.hour).padStart(2, '0')}:${String(input.minute).padStart(2, '0')}`
+  const timeLabel = timeUnknown ? '시간 미상' : formatKoreanTime(input.hour, input.minute)
 
   const visiblePillars = PILLAR_ORDER.filter((key) => !(key === 'hour' && timeUnknown))
 
