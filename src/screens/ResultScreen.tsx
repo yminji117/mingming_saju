@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { PillarKey } from 'ssaju'
 import buttonBack from '../assets/button-back.svg'
@@ -11,6 +11,12 @@ import { SINSAL_GLOSSARY, TEN_GOD_GLOSSARY } from '../lib/glossary'
 import { computeSaju } from '../lib/sajuPipeline'
 import { formatKoreanTime } from '../lib/time'
 import type { SajuFormInput } from '../lib/types'
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+  }
+}
 
 type Props = {
   input: SajuFormInput
@@ -46,6 +52,10 @@ export function ResultScreen({ input }: Props) {
   }, [pillarSals])
 
   const maxElementCount = Math.max(1, ...ELEMENT_ORDER.map((el) => result.fiveElements[el] ?? 0))
+
+  useEffect(() => {
+    window.gtag?.('event', 'confirm_saju')
+  }, [])
 
   return (
     <div className="flex min-h-dvh flex-col items-center gap-[60px] bg-[#1a1a1a] px-4 py-[80px] text-white">
